@@ -1,26 +1,19 @@
-/* Styles pour la simulation */
+/* src/components/Simulation.css */
 .simulation-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #000; /* Fond noir pour représenter l'espace */
-    color: white;
-    text-align: center;
-  }
-  
-  h1 {
-    margin-bottom: 20px;
-    font-size: 2rem;
-  }
-  
-  /* Style du canvas */
-  canvas {
-    border: 1px solid white;
-    background: #000; /* Fond du canvas */
-    display: block; /* Pour que le canvas ne prenne pas plus de place que nécessaire */
-    margin-top: 20px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7); /* Ombre autour du canvas */
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+}
+
+h1 {
+  color: #333;
+  font-family: 'Arial', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+canvas {
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+}

@@ -5,7 +5,7 @@ function CorpsCeleste({ ctx, positionX, positionY }) {
         if (!ctx) return;
 
         // Définir un rayon plus grand pour les boules
-        const radius = 50;
+        const radius = 20;
 
         // Dessiner le corps céleste avec un rayon plus grand
         ctx.beginPath();

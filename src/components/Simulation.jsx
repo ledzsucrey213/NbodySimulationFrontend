@@ -1,57 +1,50 @@
-import { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import CorpsCeleste from "./CorpsCeleste";
+// src/components/Simulation.jsx
+import React, { useEffect, useState } from 'react';
+import { Stage, Layer, Circle } from 'react-konva';
 
-function Simulation() {
-    const [corpsCelestes, setCorpsCelestes] = useState([]);
-    const canvasRef = useRef(null);
+const Simulation = () => {
+  const [bodies, setBodies] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get("http://localhost:8080/simulate");
-                setCorpsCelestes(response.data);
-            } catch (error) {
-                console.error("Erreur API:", error);
-            }
-        };
+  useEffect(() => {
+    // Fonction pour récupérer les données de simulation depuis l'API
+    const fetchBodies = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/simulate');
+        const data = await response.json();
+        setBodies(data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des corps célestes', error);
+      }
+    };
 
-        fetchData();
-        const interval = setInterval(fetchData, 100); // Rafraîchir toutes les 100ms
-        return () => clearInterval(interval);
-    }, []);
+    // Appel initial pour récupérer les corps
+    fetchBodies();
 
-    return (
-        <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <h1 style={{ color: "white" }}>Simulation N-Body</h1>
-            <canvas
-                ref={canvasRef}
-                width={800}
-                height={600}
-                style={{
-                    background: "black",
-                    border: "1px solid white",
-                    display: "block", 
-                    margin: "0 auto",
-                }}
-            >
-                {corpsCelestes.map((corps, index) => {
-                    // Diviser les positions par 100
-                    const scaledPositionX = corps.positionX / 110;
-                    const scaledPositionY = corps.positionY / 100;
+    // Met à jour les positions à intervalles réguliers
+    const intervalId = setInterval(fetchBodies, 100); // Mise à jour toutes les 100ms
+    return () => clearInterval(intervalId); // Nettoyage de l'intervalle au démontage du composant
+  }, []);
 
-                    return (
-                        <CorpsCeleste
-                            key={index}
-                            ctx={canvasRef.current?.getContext("2d")}
-                            positionX={scaledPositionX}
-                            positionY={scaledPositionY}
-                        />
-                    );
-                })}
-            </canvas>
-        </div>
-    );
-}
+  return (
+    <div className="simulation-container">
+      <h1>Simulation N-Body</h1>
+      <Stage width={700} height={700}>
+        <Layer>
+          {bodies.map((body, index) => (
+            <Circle
+              key={index}
+              x={body.positionX + 350} // Décalage pour centrer l'espace de simulation
+              y={body.positionY + 350} // Décalage pour centrer l'espace de simulation
+              radius={5} // Taille des corps célestes
+              fill="blue"
+              stroke="black"
+              strokeWidth={1}
+            />
+          ))}
+        </Layer>
+      </Stage>
+    </div>
+  );
+};
 
 export default Simulation;
