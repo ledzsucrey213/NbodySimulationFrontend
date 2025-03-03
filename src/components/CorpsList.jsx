@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import AddPlanetButton from './AddPlanetButton';  // Importer le nouveau composant
 import DeleteButton from './DeleteButton';
+import SetupButton from './SetupButton';
 
 const CorpsList = () => {
   const [bodies, setBodies] = useState([]);
@@ -36,6 +37,13 @@ const CorpsList = () => {
       }
     } catch (error) {
       console.error("Erreur réseau :", error);
+    }
+  };
+
+  // Fonction pour ajouter 30 planètes d'un coup
+  const setupPlanets = async () => {
+    for (let i = 0; i < 30; i++) {
+      await addPlanet();  // Attendre chaque appel pour ajouter une planète
     }
   };
 
@@ -77,6 +85,7 @@ const deletePlanets = async () => {
     <div className="simulation-sidebar">
       {/* Utilisation du composant AddPlanetButton et passage de la fonction addPlanet comme prop */}
       <AddPlanetButton onAddPlanet={addPlanet} />
+      <SetupButton onSetupPlanet={setupPlanets} />
       <DeleteButton deletePlanets={deletePlanets} />
 
       <h2>Liste des Planètes</h2>
